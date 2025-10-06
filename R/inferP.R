@@ -80,8 +80,6 @@
 #'
 #' @returns A vector of `min` and `max` values for the target probability, or `NA` if the constraints are mutually contradictory. If `min` and `max` are `0` and `1` then the constraints do not restrict the target probability in any way.
 #'
-#' @import lpSolve
-#'
 #' @references
 #' T. Hailperin: *Best Possible Inequalities for the Probability of a Logical Function of Events*. Am. Math. Monthly 72(4):343, 1965 <doi:10.1080/00029890.1965.11970533>.
 #'
@@ -153,8 +151,9 @@
 #'     P(host2  |  you1 & car1 & I) == P(host3  |  you1 & car1 & I)
 #' )
 #'
-#' @importFrom stats as.formula
 #' @export
+#' @import lpSolve
+#' @importFrom stats as.formula
 inferP <- function(target, ..., solidus = TRUE) {
     ## Logical connectives
     if(solidus){
