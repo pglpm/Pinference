@@ -73,7 +73,7 @@ P(-a + b  ~  c && H)
 P(!a || b  ~  c * H)
 }\if{html}{\out{</div>}}
 
-It is also possible to use \code{p} or \code{Pr} or \code{pr} instead of \code{P}.
+It is also possible to use \code{Pr}, \code{p}, \code{pr}, \code{F}, \code{f}, \code{T} (for "truth"), or \code{t} instead of \code{P}.
 }
 
 \subsection{Probability constraints}{
