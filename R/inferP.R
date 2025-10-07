@@ -54,7 +54,7 @@
 #' P(-a + b  ~  c && H)
 #' P(!a || b  ~  c * H)
 #' ```
-#' It is also possible to use `p` or `Pr` or `pr` instead of `P`.
+#' It is also possible to use `Pr`, `p`, `pr`, `F`, `f`, `T` (for "truth"), or `t` instead of `P`.
 #'
 #' ## Probability constraints
 #'
@@ -201,8 +201,11 @@ inferP <- function(target, ..., solidus = TRUE) {
 
     ## print(combos) # for debugging
 
-    ## Accepted probability (or truth) symbols
-    Psyms <- c('P', 'p', 'Pr', 'pr', 'T', 't')
+    ## function to check whether there's some probability symbol
+    checkP <- function(x){
+        ## class(try(eval(x), silent = TRUE)) == 'try-error'
+        deparse(x) %in% c('P', 'p', 'Pr', 'pr', 'T', 't', 'F', 'f')
+    }
     ## accepted relation symbols
     Esyms <- c('==', '<=', '>=', '<', '>')
 
@@ -217,7 +220,7 @@ inferP <- function(target, ..., solidus = TRUE) {
     ## Syntax check
     if(
         !(length(Tsupp) == 2) ||
-            !(deparse(Tsupp[[1]]) %in% Psyms) ||
+            !checkP(Tsupp[[1]]) ||
              length(gregexpr(barmatch, deparse(Tsupp), fixed = TRUE)[[1]]) > 1
     ) {
         stop('invalid target')
@@ -277,7 +280,7 @@ inferP <- function(target, ..., solidus = TRUE) {
         ## Syntax check
         if(
             !(length(left) == 2) ||
-                !(deparse(left[[1]]) %in% Psyms) ||
+                !checkP(left[[1]]) ||
                  length(gregexpr(barmatch, deparse(left), fixed = TRUE)[[1]]) > 1
         ) {
             stop('invalid left side in argument ', i)
@@ -296,7 +299,7 @@ inferP <- function(target, ..., solidus = TRUE) {
             if(length(right) == 2) {
                 ## right side is a probability
                 if(
-                    !(deparse(right[[1]]) %in% Psyms) ||
+                    !checkP(right[[1]]) ||
                         length(gregexpr(barmatch, deparse(right), fixed = TRUE)[[1]]) > 1
                 ) {
                     stop('invalid right side in argument ', i)
@@ -309,7 +312,7 @@ inferP <- function(target, ..., solidus = TRUE) {
             if(
                 !(deparse(right[[1]]) %in% c('*', '/')) ||
                     !(length(right[[2]]) == 2) ||
-                     !(deparse(right[[2]][[1]]) %in% Psyms)
+                     !checkP(right[[2]][[1]])
             ) {
                 stop('invalid right side in argument ', i)
             }
