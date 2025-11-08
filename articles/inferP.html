@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Pinference</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -219,41 +219,55 @@ in the previous section.</p>
 probability of two logical expressions; as optional subsequent arguments
 it takes equality or inequality constraints about the conditional
 probabilities of other logical expressions.</p>
-<p>The main notation used in the function (corresponding to the default
-argument <code>solidus = TRUE</code>) parallels the mathematical
-notation used above, with the following differences:</p>
-<ul>
-<li>Not: <code>!</code> or <code>-</code>
-</li>
-<li>And: <code>&amp;</code> or <code>&amp;&amp;</code> or
-<code>*</code>
-</li>
-<li>Or: <code>+</code>
-</li>
-<li>If-then: <code>&gt;</code> (“if
+<p>The function can be used with two different kinds of logical notation
+(“if
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
 then
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>”,
-<code>a &gt; b</code>, is simply equivalent to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>∨</mo><mi>¬</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">b \lor \lnot a</annotation></semantics></math>)<br>
+is simply equivalent to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>∨</mo><mi>¬</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">b \lor \lnot a</annotation></semantics></math>):</p>
+<p><strong>Arithmetic notation</strong>, recommended with the default
+argument <code>solidus = TRUE</code>:</p>
+<ul>
+<li>Conditional solidus
+“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow></mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="postfix">|</mo><mspace width="0.222em"></mspace><mrow></mrow><mrow></mrow></mrow><annotation encoding="application/x-tex">{}\:\vert\:\mathopen{}{}</annotation></semantics></math>”:
+<code>|</code>
+</li>
+<li>Not: <code>-</code>
+</li>
+<li>And: <code>*</code>
+</li>
+<li>Or: <code>+</code>
+</li>
+<li>If-then: <code>&gt;</code><br>
 </li>
 </ul>
-<p>If an additional argument <code>solidus = FALSE</code> is given in
-<code><a href="../reference/inferP.html">inferP()</a></code>, then a notation is used that differs from the
-above in the conditional symbol and in the “or”-connective:</p>
+<p><strong>Logical notation</strong>, recommended with the default
+argument <code>solidus = FALSE</code>:</p>
 <ul>
 <li>Conditional solidus
 “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow></mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="postfix">|</mo><mspace width="0.222em"></mspace><mrow></mrow><mrow></mrow></mrow><annotation encoding="application/x-tex">{}\:\vert\:\mathopen{}{}</annotation></semantics></math>”:
 <code>~</code>
 </li>
-<li>Or: <code>+</code> or <code>|</code> or <code>||</code>
+<li>Not: <code>!</code>
+</li>
+<li>And: <code>&amp;</code> or <code>&amp;&amp;</code>
+</li>
+<li>Or: <code>|</code> or <code>||</code>
+</li>
+<li>If-then: two-argument function<code>ifthen()</code><br>
 </li>
 </ul>
-<p>This alternative notation allows the user to use proper R syntax for
-the connectives (<code>!</code>, <code>&amp;</code>, <code>|</code>,
-<code>&amp;&amp;</code>, <code>||</code>), in case it were convenient to
-paste them from other R expressions.</p>
-<p>In the following examples the main notation is used.</p>
+<p>These two kinds of notation can actually be mixed (the only
+restriction is that <code>|</code> and <code>||</code> cannot be used
+with argument <code>solidus = TRUE</code>). But <strong>beware</strong>
+that mixing them may lead to unusual connection precedence; you should
+preferably ensure the desired precedence with parentheses in this case.
+Using <code>!</code> as “not” together with <code>+</code>
+<code>*</code> <code>&gt;</code> is particularly error-prone, so the
+function issues a warning in this case.</p>
+<p>In the following examples we use the arithmetic notation, but with
+<code>&amp;</code> for “and”.</p>
 <div class="section level3">
 <h3 id="simple-examples">Simple examples<a class="anchor" aria-label="anchor" href="#simple-examples"></a>
 </h3>
@@ -290,7 +304,7 @@ must be 0:</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/inferP.html">inferP</a></span><span class="op">(</span></span>
-<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">a</span>  <span class="op">|</span>  <span class="op">!</span><span class="va">a</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span></span>
+<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">a</span>  <span class="op">|</span>  <span class="op">-</span><span class="va">a</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># min max </span></span>
 <span><span class="co">#   0   0</span></span></code></pre></div>
@@ -302,7 +316,7 @@ is undefined:</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/inferP.html">inferP</a></span><span class="op">(</span></span>
-<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">a</span>  <span class="op">|</span>  <span class="va">b</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">b</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span></span>
+<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">a</span>  <span class="op">|</span>  <span class="va">b</span> <span class="op">&amp;</span> <span class="op">-</span><span class="va">b</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># min max </span></span>
 <span><span class="co">#  NA  NA</span></span></code></pre></div>
@@ -464,9 +478,9 @@ other door, No. 2.</p>
 three propositions expressing the information we have: you chose door
 No. 1, <code>you1</code>, the host opened door No. 3,
 <code>host3</code>, and there is no car behind door No. 3,
-<code>!car3</code>.</p>
+<code>-car3</code>.</p>
 <p>The target probability is thus
-<code>P(car2  |  you1 &amp; host3 &amp; !car3 &amp; I)</code></p>
+<code>P(car2  |  you1 &amp; host3 &amp; -car3 &amp; I)</code></p>
 </div>
 <div class="section level3">
 <h3 id="given-probabilities">Given probabilities<a class="anchor" aria-label="anchor" href="#given-probabilities"></a>
@@ -497,7 +511,7 @@ behind the door you chose:<br><code>P(host2  |  you1 &amp; car1 &amp; I) == P(ho
 <code><a href="../reference/inferP.html">inferP()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/inferP.html">inferP</a></span><span class="op">(</span></span>
-<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">car2</span>  <span class="op">|</span>  <span class="va">you1</span> <span class="op">&amp;</span> <span class="va">host3</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">car3</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span>,</span>
+<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">car2</span>  <span class="op">|</span>  <span class="va">you1</span> <span class="op">&amp;</span> <span class="va">host3</span> <span class="op">&amp;</span> <span class="op">-</span><span class="va">car3</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span>,</span>
 <span>    <span class="co">##</span></span>
 <span>    <span class="fu">P</span><span class="op">(</span><span class="va">car1</span> <span class="op">&amp;</span> <span class="va">car2</span>  <span class="op">|</span>  <span class="va">I</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span>,</span>
 <span>    <span class="fu">P</span><span class="op">(</span><span class="va">car1</span> <span class="op">&amp;</span> <span class="va">car3</span>  <span class="op">|</span>  <span class="va">I</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span>,</span>
@@ -536,7 +550,7 @@ door No. 2 more than No. 3 or vice versa, when the car is behind door
 No. 1. The bounds of the target probability become</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/inferP.html">inferP</a></span><span class="op">(</span></span>
-<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">car2</span>  <span class="op">|</span>  <span class="va">you1</span> <span class="op">&amp;</span> <span class="va">host3</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">car3</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span>,</span>
+<span>    target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">car2</span>  <span class="op">|</span>  <span class="va">you1</span> <span class="op">&amp;</span> <span class="va">host3</span> <span class="op">&amp;</span> <span class="op">-</span><span class="va">car3</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span>,</span>
 <span>    <span class="co">##</span></span>
 <span>    <span class="fu">P</span><span class="op">(</span><span class="va">car1</span> <span class="op">&amp;</span> <span class="va">car2</span>  <span class="op">|</span>  <span class="va">I</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span>,</span>
 <span>    <span class="fu">P</span><span class="op">(</span><span class="va">car1</span> <span class="op">&amp;</span> <span class="va">car3</span>  <span class="op">|</span>  <span class="va">I</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span>,</span>
@@ -583,11 +597,11 @@ favours one door over another, when the car is behind the door you
 chose:<br><code>P(host2  |  you1 &amp; car1 &amp; fall &amp; I) == P(host3  |  you1 &amp; car1 &amp; fall &amp; I)</code></p>
 <p>The target probability is for the car being behind door No. 2, given
 that you chose No. 1, the host fell and opened No. 3, but there was no
-car there:<br><code>P(car2  |  you1 &amp; host3 &amp; !car3 &amp; fall &amp; I)</code>.</p>
+car there:<br><code>P(car2  |  you1 &amp; host3 &amp; -car3 &amp; fall &amp; I)</code>.</p>
 <p>The result is</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/inferP.html">inferP</a></span><span class="op">(</span></span>
-<span>   target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">car2</span>  <span class="op">|</span>  <span class="va">you1</span> <span class="op">&amp;</span> <span class="va">host3</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">car3</span> <span class="op">&amp;</span> <span class="va">fall</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span>,</span>
+<span>   target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">car2</span>  <span class="op">|</span>  <span class="va">you1</span> <span class="op">&amp;</span> <span class="va">host3</span> <span class="op">&amp;</span> <span class="op">-</span><span class="va">car3</span> <span class="op">&amp;</span> <span class="va">fall</span> <span class="op">&amp;</span> <span class="va">I</span><span class="op">)</span>,</span>
 <span>    <span class="co">##</span></span>
 <span>    <span class="fu">P</span><span class="op">(</span><span class="va">car1</span> <span class="op">&amp;</span> <span class="va">car2</span>  <span class="op">|</span>  <span class="va">I</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span>,</span>
 <span>    <span class="fu">P</span><span class="op">(</span><span class="va">car1</span> <span class="op">&amp;</span> <span class="va">car3</span>  <span class="op">|</span>  <span class="va">I</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span>,</span>
@@ -655,7 +669,7 @@ University Presses) <a href="https://archive.org/details/hailperin1996-Sententia
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

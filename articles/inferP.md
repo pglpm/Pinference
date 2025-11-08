@@ -1,0 +1,591 @@
+# Probability bounds of logical expressions
+
+## Introduction
+
+The probability calculus is an extension of the calculus of
+propositional logic. Besides the *truth* or *falsity* of propositions,
+the probability calculus also considers a continuum of degrees of
+credibility – probabilities – between those two extremes. Just as
+propositional logic gives a set of rules to derive the truth or falsity
+of some propositions from the truth or falsity of others, so the
+probability calculus gives a set of rules to derive the probability for
+some propositions from the probability for others; these rules include
+the logical ones as a special case.
+
+There are different logical deduction systems (Pelletier & Hazen 2023),
+each with many dialects, to express the rules of propositional logic.
+One of them is the [*sequent
+calculus*](https://encyclopediaofmath.org/wiki/Sequent_calculus)
+(Takeuti 1987). The probability calculus has many analogies with the
+sequent calculus
+
+In sequent calculus we express that proposition $a$ is true within a set
+of axioms $I$ by the notation
+
+$$I \vdash a$$
+
+The same is expressed in the probability calculus by the notation (note
+the reflection)
+
+$$P\left( a\ |\ {}I \right) = 1$$
+
+but in this case we can also consider degrees of credibility different
+from $1$.
+
+The theory of “random variables” is a particular application of the
+probability calculus: an expression such as “$X{\! = \!}x$” means “The
+quantity $X$ is measured to have value $x$” – which is just a
+proposition. Also the “causal calculus” is a particular application: an
+expression such as “${do}\left( X{\! = \!}x \right)$” means “The
+quantity $X$ has been *set* equal to $x$” – which is also just a
+proposition. In the probability calculus we can in fact even consider
+more general propositions, such as “The quantity $X$ has been *reported*
+to be equal to $x$”.
+
+  
+
+The view of the probability calculus as an extension of the logical
+calculus goes back at least to Boole, possibly to Laplace. For more
+information about the formalism and history see e.g. Hailperin 1996,
+Jaynes 2003, Jeffreys 1983, Johnson 1924, Johnson 1936.
+
+## Probabilistic inferences
+
+In propositional logic, suppose we assert that:
+
+- proposition $a$ is true given a set of axioms $I$,
+- proposition $b \vee \neg a$ is true given the set of axioms $I$
+  augmented with the proposition $c$.
+
+Then we can also assert that $b$ is true given the set of axioms
+$c \land I$. This is a logical inference. In the notation of sequent
+calculus (Takeuti 1987) it is written as follows:
+
+$$\frac{I \vdash a\quad\quad c \land I \vdash b \vee \neg a}{c \land I \vdash b}$$
+
+The conclusion follows from the initial assertions by the application of
+a set of inference rules.
+
+In the probability calculus the same inference can be expressed as
+follows:
+
+$$\frac{P\left( a\ |\ {}I \right) = 1\quad\quad P\left( b \vee \neg a\ |\ {}c \land I \right) = 1}{P\left( b\ |\ {}c \land I \right) = 1}$$
+
+This final probability can be shown to follow from the initial ones by
+the well-known probability rules, valid for any sentences $a$, $b$:
+
+- $P\left( \neg a\ |\ {}I \right) = 1 - P\left( a\ |\ {}I \right)$
+
+- $P\left( a \land b\ |\ {}I \right) = P\left( a\ |\ {}b \land I \right) \cdot P\left( b\ |\ {}I \right) = P\left( b\ |\ {}a \land I \right) \cdot P\left( a\ |\ {}I \right)$
+
+- $P\left( a \vee b\ |\ {}I \right) = P\left( a\ |\ {}I \right) + P\left( b\ |\ {}I \right) - P\left( a \land b\ |\ {}I \right)$
+
+- $P\left( a\ |\ {}a \land I \right) = 1$
+
+Another example of a simple probability inference, which immediately
+follows by the probability rules, is
+
+$$\frac{P\left( a\ |\ {}I \right) = 0.3\quad\quad P\left( b\ |\ {}a \land I \right) = 0.2}{P\left( a \land b\ |\ {}I \right) = 0.06}$$
+
+  
+
+The probability rules effectively imply the rules of propositional logic
+as special cases.
+
+What’s remarkable is that **the probability rules allow us to
+algorithmically determine the *lower* and *upper* values that a
+probability can have, under the assertion of the values of other
+probabilities**. It is well-known, for instance, that if
+
+$$P\left( a\ |\ {}I \right) = 0.2\,,\quad P\left( b\ |\ {}I \right) = 0.7$$
+
+then the probability $P\left( a \land b\ |\ {}I \right)$ cannot be
+larger than the minimum of the two above, that is,
+
+$$P\left( a \land b\ |\ {}I \right) \in \lbrack 0,0.2\rbrack$$
+
+In fact this is also possible with inequality constraints. As a very
+trivial example, if the probability
+$P\left( a\ |\ {}I \right) \leq 0.3$, then we must have
+$P\left( \neg a\ |\ {}I \right) \geq 0.3$.
+
+Finding such bounds is equivalent to solving a linear-optimization
+problem. The most relevant texts about this equivalence are those by
+Hailperin 1965 and Hailperin 1996.
+
+## The function `inferP()`
+
+The function
+[`inferP()`](https://pglpm.github.io/Pinference/reference/inferP.md)
+finds the bounds of a target probability by implementing the
+linear-optimization algorithm mentioned in the previous section.
+
+As a first argument,`target =`, it takes the conditional probability of
+two logical expressions; as optional subsequent arguments it takes
+equality or inequality constraints about the conditional probabilities
+of other logical expressions.
+
+The function can be used with two different kinds of logical notation
+(“if $a$ then $b$”, is simply equivalent to $b \vee \neg a$):
+
+**Arithmetic notation**, recommended with the default argument
+`solidus = TRUE`:
+
+- Conditional solidus “${}\ |\ {}{}$”: `|`
+- Not: `-`
+- And: `*`
+- Or: `+`
+- If-then: `>`  
+
+**Logical notation**, recommended with the default argument
+`solidus = FALSE`:
+
+- Conditional solidus “${}\ |\ {}{}$”: `~`
+- Not: `!`
+- And: `&` or `&&`
+- Or: `|` or `||`
+- If-then: two-argument function`ifthen()`  
+
+These two kinds of notation can actually be mixed (the only restriction
+is that `|` and `||` cannot be used with argument `solidus = TRUE`). But
+**beware** that mixing them may lead to unusual connection precedence;
+you should preferably ensure the desired precedence with parentheses in
+this case. Using `!` as “not” together with `+` `*` `>` is particularly
+error-prone, so the function issues a warning in this case.
+
+In the following examples we use the arithmetic notation, but with `&`
+for “and”.
+
+### Simple examples
+
+Load the package:
+
+``` r
+library('Pinference')
+```
+
+Here are some examples, from more trivial to more complex.
+
+- The probability for a sentence $a$ can a priori be anything between 0
+  and 1:
+
+``` r
+inferP(
+    target = P(a  |  I)
+)
+# min max 
+#   0   1
+```
+
+  
+
+- But if we assume the truth of that sentence, then its probability must
+  be 1:
+
+``` r
+inferP(
+    target = P(a  |  a & I)
+)
+# min max 
+#   1   1
+```
+
+  
+
+- If we assume the negation of that sentence, then its probability must
+  be 0:
+
+``` r
+inferP(
+    target = P(a  |  -a & I)
+)
+# min max 
+#   0   0
+```
+
+  
+
+- A probability conditional on contradictory premises, such as
+  $b \land \neg b$, is undefined:
+
+``` r
+inferP(
+    target = P(a  |  b & -b & I)
+)
+# min max 
+#  NA  NA
+```
+
+  
+
+### Examples with constraints
+
+- This is a statement of the “and” or “multiplication” or “conjunction”
+  rule:
+
+``` r
+inferP(
+    target = P(a & b  |  I),
+    P(a  |  I) == 0.2,
+    P(b  |  a & I) == 0.3
+)
+#  min  max 
+# 0.06 0.06
+```
+
+- The rule for “conditional probability”:
+
+``` r
+inferP(
+    target = P(b  |  a & I),
+    P(a & b  |  I) == 0.06,
+    P(a  |  I) == 0.2
+)
+# min max 
+# 0.3 0.3
+```
+
+- Same rule, but with an inequality constraint:
+
+``` r
+inferP(
+    target = P(b  |  a & I),
+    P(a & b  |  I) == 0.06,
+    P(a  |  I) <= 0.2
+)
+# min max 
+# 0.3 1.0
+```
+
+- If we assert that two sentences have the same probability, and the
+  sentences are mutually exclusive and exhaustive, then each must have
+  0.5 probability:
+
+``` r
+inferP(
+    target = P(a  |  I),
+    P(a  |  I) == P(b  |  I),
+    P(a & b  |  I) == 0,
+    P(a + b  |  I) == 1
+)
+# min max 
+# 0.5 0.5
+```
+
+- The logical rule of implication (*modus ponens*): if $a$ and
+  $\left. a\Rightarrow b \right.$ are true, then $b$ is true:
+
+``` r
+inferP(
+    target = P(b  |  I),
+    P(a  |  I) == 1,
+    P(a > b  |  I) == 1
+)
+# min max 
+#   1   1
+```
+
+- Under a false proposition, any implication is always true:
+
+``` r
+inferP(
+    target = P(a > b  |  I),
+    P(a  |  I) == 0
+)
+# min max 
+#   1   1
+```
+
+- A variant of the [cut rule](https://ncatlab.org/nlab/show/cut+rule/)
+  of sequent calculus:
+
+``` r
+inferP(
+    target = P(X + Y | I & J),
+    P(A & X | I) == 1,
+    P(Y | A & J) == 1
+)
+# min max 
+#   1   1
+```
+
+  
+
+### Combining evidence
+
+Suppose that hypothesis $H$ has probability 0.7 given evidence $E_{1}$,
+and probability 0.8 given evidence $E_{2}$. What is its probability if
+two pieces of evidence are combined, that is, given their conjunction?
+An interesting result, proven in Hailperin 2006, is that such
+probability can be anything:
+
+``` r
+inferP(
+    target = P(H  |  E1 & E2 & I),
+    P(H  |  E1 & I) == 0.7,
+    P(H  |  E2 & I) == 0.8
+)
+# min max 
+#   0   1
+```
+
+## The Monty Hall problem
+
+The “Monty Hall problem”, inspired by the TV show *Let’s make a deal!*
+hosted by Monty Hall, was proposed in the *Parade* magazine in 1990 (see
+Lo Bello 1991). the numbers of the doors are changed here):
+
+> Suppose you are on a game show and given a choice of three doors.
+> Behind one is a car; behind the others are goats. You pick door No. 1,
+> and the host, who knows what is behind them and wouldn’t open the door
+> with the car, opens No. 3, which has a goat. He then asks if you want
+> to pick No. 2. Should you switch?
+
+We can solve this problem with
+[`inferP()`](https://pglpm.github.io/Pinference/reference/inferP.md).
+
+### Propositions
+
+First let’s introduce some notation for the relevant propositions:
+
+- `I`: a proposition expressing the rules of the game,
+- `car1`: “The car is behind door No. 1”,
+- `you1`: “You pick door No. 1”,
+- `host1`: “The host opens door No. 1”,
+
+and similarly for the other doors.
+
+### Target probability
+
+We want to know what’s the probability that the car is behind the other
+door, No. 2.
+
+The conditional of the target probability has, besides the game rules
+$I$, three propositions expressing the information we have: you chose
+door No. 1, `you1`, the host opened door No. 3, `host3`, and there is no
+car behind door No. 3, `-car3`.
+
+The target probability is thus `P(car2 | you1 & host3 & -car3 & I)`
+
+### Given probabilities
+
+We must express the information we have and the game rules in terms of
+probabilities. Note that there are several equivalent ways to express
+the probabilistic constraints listed below.
+
+1.  We know that there is only one car, and it must be behind one door.
+    This corresponds to four probability constraints:  
+    `P(car1 & car2 | I) == 0`  
+    `P(car1 & car3 | I) == 0`  
+    `P(car2 & car3 | I) == 0`  
+    `P(car1 + car2 + car3 | I) == 1`  
+
+2.  The host must open one door, and only one door. But the host cannot
+    open the door you chose, and cannot open the door that has the car,
+    but must open one door. This corresponds to seven probability
+    constraints:  
+    `P(host1 & host2 | I) == 0`  
+    `P(host1 & host3 | I) == 0`  
+    `P(host2 & host3 | I) == 0`  
+    `P(host1 + host2 + host3 | I) == 1`  
+    `P(host1 | you1 & I) == 0`  
+    `P(host2 | car2 & I) == 0`  
+    `P(host3 | car3 & I) == 0`  
+      
+
+3.  Let’s say that you are initially equally undecided among the three
+    doors:  
+    `P(car1 | I) == P(car2 | I)`  
+    `P(car2 | I) == P(car3 | I)`  
+      
+
+4.  The fact, alone, that you picked door No. 1 is irrelevant to the
+    knowledge about the car’s position:  
+    `P(car1 | you1 & I) == P(car2 | you1 & I)`  
+    `P(car2 | you1 & I) == P(car3 | you1 & I)`  
+      
+
+5.  Finally, we have no reason to believe that the host favours one door
+    over another, when a choice is possible, that is, when the car is
+    behind the door you chose:  
+    `P(host2 | you1 & car1 & I) == P(host3 | you1 & car1 & I)`  
+
+### Result
+
+We can finally input the desired target and the constraints into
+[`inferP()`](https://pglpm.github.io/Pinference/reference/inferP.md):
+
+``` r
+inferP(
+    target = P(car2  |  you1 & host3 & -car3 & I),
+    ##
+    P(car1 & car2  |  I) == 0,
+    P(car1 & car3  |  I) == 0,
+    P(car2 & car3  |  I) == 0,
+    P(car1 + car2 + car3  |  I) == 1,
+    ##
+    P(host1 & host2 | I) == 0,
+    P(host1 & host3 | I) == 0,
+    P(host2 & host3 | I) == 0,
+    P(host1 + host2 + host3  |  I) == 1,
+    P(host1  |  you1 & I) == 0,
+    P(host2  |  car2 & I) == 0,
+    P(host3  |  car3 & I) == 0,
+    ##
+    P(car1  |  I) == P(car2  |  I),
+    P(car2  |  I) == P(car3  |  I),
+    ##
+    P(car1  |  you1 & I) == P(car2  |  you1 & I),
+    P(car2  |  you1 & I) == P(car3  |  you1 & I),
+    ##
+    P(host2  |  you1 & car1 & I) == P(host3  |  you1 & car1 & I)
+)
+#      min      max 
+# 0.666667 0.666667
+```
+
+The well-known result is 2/3. You can also check the obvious result for
+`car3`, which is 0.
+
+### Omitting some probability constraints
+
+It is interesting to see what happens to the bounds of the target
+probability when some constraints are omitted. Suppose for instance that
+we omit the constraint  
+`P(host2 | you1 & car1 & I) == P(host3 | you1 & car1 & I)`  
+which states that we have no reason to believe the host would choose
+door No. 2 more than No. 3 or vice versa, when the car is behind door
+No. 1. The bounds of the target probability become
+
+``` r
+inferP(
+    target = P(car2  |  you1 & host3 & -car3 & I),
+    ##
+    P(car1 & car2  |  I) == 0,
+    P(car1 & car3  |  I) == 0,
+    P(car2 & car3  |  I) == 0,
+    P(car1 + car2 + car3  |  I) == 1,
+    ##
+    P(host1 & host2 | I) == 0,
+    P(host1 & host3 | I) == 0,
+    P(host2 & host3 | I) == 0,
+    P(host1 + host2 + host3  |  I) == 1,
+    P(host1  |  you1 & I) == 0,
+    P(host2  |  car2 & I) == 0,
+    P(host3  |  car3 & I) == 0,
+    ##
+    P(car1  |  I) == P(car2  |  I),
+    P(car2  |  I) == P(car3  |  I),
+    ##
+    P(car1  |  you1 & I) == P(car2  |  you1 & I),
+    P(car2  |  you1 & I) == P(car3  |  you1 & I)
+    ##
+    ## P(host2  |  you1 & car1 & I) == P(host3  |  you1 & car1 & I) # omitted
+)
+# min max 
+# 0.5 1.0
+```
+
+In this case the constraints do not determine a single value for the
+probability that the car is behind door No. 2, but they still constrain
+it to be more than 1/2. The conclusion is that it is still best to
+switch door (if you want the car), but the credibility of winning is not
+2/3.
+
+### Variations
+
+The internet offers many variations of the Monty Hall problem. They can
+also be solved with
+[`inferP()`](https://pglpm.github.io/Pinference/reference/inferP.md).
+
+Let’s take a “Monty Fall” variation as an example. There is the
+possibility that the host falls while going to open a door. We represent
+this with the proposition `fall`.
+
+If the hosts falls, there is a non-zero probability, let’s say 10%, that
+the host will open the door with the car after you choose door No. 1. We
+can express this by the constraints  
+`P(host2 | car2 & fall & you1 & I) == 0.1`  
+`P(host3 | car3 & fall & you1 & I) == 0.1`
+
+Finally we still have no reason to believe that the falling host favours
+one door over another, when the car is behind the door you chose:  
+`P(host2 | you1 & car1 & fall & I) == P(host3 | you1 & car1 & fall & I)`
+
+The target probability is for the car being behind door No. 2, given
+that you chose No. 1, the host fell and opened No. 3, but there was no
+car there:  
+`P(car2 | you1 & host3 & -car3 & fall & I)`.
+
+The result is
+
+``` r
+inferP(
+   target = P(car2  |  you1 & host3 & -car3 & fall & I),
+    ##
+    P(car1 & car2  |  I) == 0,
+    P(car1 & car3  |  I) == 0,
+    P(car2 & car3  |  I) == 0,
+    P(car1 + car2 + car3  |  I) == 1,
+    ##
+    P(host1 & host2 | I) == 0,
+    P(host1 & host3 | I) == 0,
+    P(host2 & host3 | I) == 0,
+    P(host1 + host2 + host3  |  I) == 1,
+    P(host1  |  you1 & I) == 0,
+    P(host2  |  car2 & fall & you1 & I) == 0.1,
+    P(host3  |  car3 & fall & you1 & I) == 0.1,
+    ##
+    P(car1  |  I) == P(car2  |  I),
+    P(car2  |  I) == P(car3  |  I),
+    ##
+    P(car1  |  you1 & I) == P(car2  |  you1 & I),
+    P(car2  |  you1 & I) == P(car3  |  you1 & I),
+    P(car1  |  you1 & fall & I) == P(car2  |  you1 & fall & I),
+    P(car2  |  you1 & fall & I) == P(car3  |  you1 & fall & I),
+    ##
+    P(host2  |  you1 & car1 & fall & I) == P(host3  |  you1 & car1 & fall & I)
+)
+#      min      max 
+# 0.642857 0.642857
+```
+
+roughly a 64% probability that the car is behind door No. 2. You can
+check that this probability becomes 50% if there’s a 50% probability
+that the falling host opens the door with the car.
+
+An interesting aspects of such variations is to precisely translate the
+different verbal information into formal propositions and their
+probability constraints.
+
+## References
+
+Jaynes (2003): *Probability Theory: The Logic of Science* (Cambridge
+University Press) <doi:10.1017/CBO9780511790423>.
+
+Jeffreys (1983): *Theory of Probability* (3rd ed. Oxford University
+Press) <doi:10.1093/oso/9780198503682.001.0001>.
+
+Johnson (1924): *Logic. Part III: The Logical Foundations of Science*
+(Cambridge University Press) <https://archive.org/details/logic03john>.
+
+Johnson (1932): *Probability: The Relations of Proposal to Supposal*
+(Mind 41(161):1) <doi:10.1093/mind/XLI.161.1>.
+
+Hailperin (1965): *Best Possible Inequalities for the Probability of a
+Logical Function of Events* (Am. Math. Monthly 72(4):343)
+<doi:10.1080/00029890.1965.11970533>.
+
+Hailperin (1996): *Sentential Probability Logic: Origins, Development,
+Current Status, and Technical Applications* (Associated University
+Presses)
+<https://archive.org/details/hailperin1996-Sentential_probability_logic/>.
+
+Hailperin (2006): *Probability logic and combining evidence* (Hist.
+Philos. Log. 27(3):249) <doi:10.1080/01445340600616289>.
+
+Pelletier, Hazen 2023: *Natural Deduction Systems in Logic* (Stanford
+Encyclopedia of Philosophy)
+<https://plato.stanford.edu/archives/spr2023/entries/natural-deduction/>.
+
+Takeuti (1987): *Proof Theory* (2nd ed. North-Holland).

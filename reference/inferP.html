@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Pinference</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,15 +80,21 @@
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>coin.lands.tails</span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>coin_lands_heads</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="st">`</span><span class="at">tomorrow it rains</span><span class="st">`</span> <span class="co"># note the backticks</span></span></code></pre><p></p></div>
-<p>Available logical connectives are "not" (negation, "\(\lnot\)"), "and" (conjunction, "\(\land\)"), "or" (disjunction, "\(\lor\)"), "if-then" (implication, "\(\Rightarrow\)"). The first three follow the standard R syntax for logical operators (see <a href="https://rdrr.io/r/base/logical.html" class="external-link">base::logical</a>):</p><ul><li><p>Not: <code> !</code> or <code> -</code></p></li>
-<li><p>And: <code>&amp;</code> or <code>&amp;&amp;</code> or <code>*</code></p></li>
-<li><p>Or: <code>+</code>; if argument <code>solidus = FALSE</code>, also <code>||</code> or <code>|</code> are allowed.</p></li>
-</ul><p>The "if-then" connective is represented by the infix operator <code>&gt;</code>; internally <code>x &gt; y</code> is simply defined as <code>x or not-y</code>.</p>
+<p>Available logical connectives are "not" (negation, "\(\lnot\)"), "and" (conjunction, "\(\land\)"), "or" (disjunction, "\(\lor\)"), "if-then" (implication, "\(\Rightarrow\)") which internally is simply defined as "x or not-y". Two kinds of notation are available:</p>
+<p><strong>Arithmetic notation</strong>: should be used with argument <code>solidus = TRUE</code>:</p><ul><li><p>Not: <code> -</code></p></li>
+<li><p>And: <code>*</code></p></li>
+<li><p>Or: <code>+</code></p></li>
+<li><p>If-then: <code>&gt;</code></p></li>
+</ul><p><strong>Logical notation</strong> (see <a href="https://rdrr.io/r/base/logical.html" class="external-link">base::logical</a>): should be used with the argument <code>solidus = FALSE</code>:</p><ul><li><p>Not: <code>!</code></p></li>
+<li><p>And: <code>&amp;</code> or <code>&amp;&amp;</code></p></li>
+<li><p>Or: <code>|</code> or <code>||</code></p></li>
+<li><p>If-then: two-argument function <code>ifthen()</code></p></li>
+</ul><p>The two kinds of notation can actually be mixed (only <code>|</code> and <code>||</code> are not allowed if <code>solidus = TRUE</code>), but <strong>beware</strong> of very unusual connective precedence in that case; for example, <code>!a + b</code> is interpreted as <code>!(a + b)</code>. If you use mixed notation you should explicitly group with parentheses to ensure the desired connective precedence. A warning is issued when <code>!</code> is used for negation together with <code>+</code>, <code>*</code>, because the grouping is dangerously counter-intuitive in this case.</p>
 <p>Examples of logical expressions:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>a</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>a <span class="sc">&amp;</span> b</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>(a <span class="sc">+</span> hypothesis1) <span class="sc">&amp;</span> <span class="sc">-</span>A</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>red.ball <span class="sc">&amp;</span> ((a <span class="sc">&gt;</span> <span class="sc">!</span>b) <span class="sc">+</span> c)</span></code></pre><p></p></div>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>red.ball <span class="sc">&amp;</span> ((a <span class="sc">&gt;</span> <span class="sc">-</span>b) <span class="sc">+</span> c)</span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -98,13 +104,10 @@
 <p>The probability of an expression \(X\) conditional on an expression \(Y\)in entered with syntax similar to the common mathematical notation \(\mathrm{P}(X \vert Y)\). The solidus "<code>|</code>" is used to separate the conditional (note that in usual R syntax such symbol stands for logical "or" instead). If the argument <code>solidus = FALSE</code> is given in the function, then the tilde  "<code>~</code>" is used instead of the solidus (note that in usual R syntax such symbol introduces a formula instead). For instance</p>
 <p>\(\mathrm{P}(\lnot a \lor b \:\vert\: c \land H)\)</p>
 <p>can be entered in the following ways, among others (extra spaces added just for clarity):</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">!</span>a <span class="sc">+</span> b  <span class="sc">|</span>  c <span class="sc">&amp;</span> H)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">-</span>a <span class="sc">+</span> b  <span class="sc">|</span>  c <span class="sc">&amp;&amp;</span> H)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">!</span>a <span class="sc">+</span> b  <span class="sc">|</span>  c <span class="sc">*</span> H)</span></code></pre><p></p></div>
-<p>or, if argument  <code>solidus = FALSE</code>, in the following ways:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">-</span>a <span class="sc">+</span> b  <span class="sc">|</span>  c <span class="sc">*</span> H)</span></code></pre><p></p></div>
+<p>or, if argument  <code>solidus = FALSE</code>:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">!</span>a <span class="sc">|</span> b  <span class="sc">~</span>  c <span class="sc">&amp;</span> H)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">-</span>a <span class="sc">+</span> b  <span class="sc">~</span>  c <span class="sc">&amp;&amp;</span> H)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">!</span>a <span class="sc">||</span> b  <span class="sc">~</span>  c <span class="sc">*</span> H)</span></code></pre><p></p></div>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">P</span>(<span class="sc">!</span>a <span class="sc">||</span> b  <span class="sc">~</span>  c <span class="sc">&amp;&amp;</span> H)</span></code></pre><p></p></div>
 <p>It is also possible to use <code>Pr</code>, <code>p</code>, <code>pr</code>, <code>F</code>, <code>f</code>, <code>T</code> (for "truth"), or <code>t</code> instead of <code>P</code>.</p>
 </div>
 
@@ -144,7 +147,7 @@
 <span class="r-in"><span><span class="co">## Trivial example with inequality constraint</span></span></span>
 <span class="r-in"><span><span class="fu">inferP</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">a</span> <span class="op">|</span> <span class="va">h</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu">P</span><span class="op">(</span><span class="op">!</span><span class="va">a</span> <span class="op">|</span> <span class="va">h</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">0.2</span></span></span>
+<span class="r-in"><span>  <span class="fu">P</span><span class="op">(</span><span class="op">-</span><span class="va">a</span> <span class="op">|</span> <span class="va">h</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">0.2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> min max </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.0 0.8 </span>
@@ -222,7 +225,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
