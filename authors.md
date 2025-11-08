@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/pglpm/Pinference/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/pglpm/Pinference/blob/v0.2.6/DESCRIPTION)
 
 Porta Mana P (2025). *Pinference: Probability Inference for
 Propositional Logic*. R package version 0.2.6,
