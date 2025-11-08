@@ -119,23 +119,29 @@ The function `inferP()` finds the bounds of a target probability by implementing
 
 As a first argument,`target =`, it takes the conditional probability of two   logical expressions; as optional subsequent arguments it takes equality or inequality constraints about the conditional probabilities of other logical expressions.
 
-The main notation used in the function (corresponding to the default argument `solidus = TRUE`) parallels the mathematical notation used above, with the following differences:
+The function can be used with two different kinds of logical notation ("if $a$ then $b$", is simply equivalent to $b \lor \lnot a$):
 
-- Not: ` !` or ` -`
-- And: ` & ` or ` && ` or ` * `
+**Arithmetic notation**, recommended with the default argument `solidus = TRUE`:
+
+- Conditional solidus "${}\|{}$": ` | `
+- Not: ` - `
+- And: ` * `
 - Or: ` + `
-- If-then: ` > ` ("if $a$ then $b$", `a > b`, is simply equivalent to $b \lor \lnot a$)
+- If-then: ` > `
 \
 
-If an additional argument `solidus = FALSE` is given in `inferP()`, then a notation is used that differs from the above in the conditional symbol and in the "or"-connective:
+**Logical notation**, recommended with the default argument `solidus = FALSE`:
 
 - Conditional solidus "${}\|{}$": ` ~ `
-- Or: ` + ` or ` | ` or ` || `
+- Not: ` ! `
+- And: ` & ` or ` && `
+- Or: ` | ` or ` || `
+- If-then: two-argument function` ifthen() `
+\
 
-This alternative notation allows the user to use proper R syntax for the connectives (`!`, `&`, `|`, `&&`, `||`), in case it were convenient to paste them from other R expressions.
+These two kinds of notation can actually be mixed (the only restriction is that ` | ` and ` || ` cannot be used with argument `solidus = TRUE`). But **beware** that mixing them may lead to unusual connection precedence; you should preferably ensure the desired precedence with parentheses in this case. Using ` !` as "not" together with ` + ` ` * ` ` > ` is particularly error-prone, so the function issues a warning in this case.
 
-In the following examples the main notation is used.
-
+In the following examples we use the arithmetic notation, but with ` & ` for "and".
 
 ## Simple examples
 
@@ -175,7 +181,7 @@ inferP(
 
 ``` r
 inferP(
-    target = P(a  |  !a & I)
+    target = P(a  |  -a & I)
 )
 # min max 
 #   0   0
@@ -187,7 +193,7 @@ inferP(
 
 ``` r
 inferP(
-    target = P(a  |  b & !b & I)
+    target = P(a  |  b & -b & I)
 )
 # min max 
 #  NA  NA
@@ -320,9 +326,9 @@ and similarly for the other doors.
 
 We want to know what's the probability that the car is behind the other door, No. 2.
 
-The conditional of the target probability has, besides the game rules $I$, three propositions expressing the information we have: you chose door No. 1, `you1`, the host opened door No. 3, `host3`, and there is no car behind door No. 3, `!car3`.
+The conditional of the target probability has, besides the game rules $I$, three propositions expressing the information we have: you chose door No. 1, `you1`, the host opened door No. 3, `host3`, and there is no car behind door No. 3, `-car3`.
 
-The target probability is thus `P(car2  |  you1 & host3 & !car3 & I)`
+The target probability is thus `P(car2  |  you1 & host3 & -car3 & I)`
 
 ## Given probabilities
 
@@ -366,7 +372,7 @@ We can finally input the desired target and the constraints into `inferP()`:
 
 ``` r
 inferP(
-    target = P(car2  |  you1 & host3 & !car3 & I),
+    target = P(car2  |  you1 & host3 & -car3 & I),
     ##
     P(car1 & car2  |  I) == 0,
     P(car1 & car3  |  I) == 0,
@@ -404,7 +410,7 @@ which states that we have no reason to believe the host would choose door No. 
 
 ``` r
 inferP(
-    target = P(car2  |  you1 & host3 & !car3 & I),
+    target = P(car2  |  you1 & host3 & -car3 & I),
     ##
     P(car1 & car2  |  I) == 0,
     P(car1 & car3  |  I) == 0,
@@ -448,13 +454,13 @@ Finally we still have no reason to believe that the falling host favours one doo
 `P(host2  |  you1 & car1 & fall & I) == P(host3  |  you1 & car1 & fall & I)`
 
 The target probability is for the car being behind door No. 2, given that you chose No. 1, the host fell and opened No. 3, but there was no car there:    
-`P(car2  |  you1 & host3 & !car3 & fall & I)`.
+`P(car2  |  you1 & host3 & -car3 & fall & I)`.
 
 The result is
 
 ``` r
 inferP(
-   target = P(car2  |  you1 & host3 & !car3 & fall & I),
+   target = P(car2  |  you1 & host3 & -car3 & fall & I),
     ##
     P(car1 & car2  |  I) == 0,
     P(car1 & car3  |  I) == 0,

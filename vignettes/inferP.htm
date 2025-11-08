@@ -484,31 +484,40 @@ in the previous section.</p>
 probability of two logical expressions; as optional subsequent arguments
 it takes equality or inequality constraints about the conditional
 probabilities of other logical expressions.</p>
-<p>The main notation used in the function (corresponding to the default
-argument <code>solidus = TRUE</code>) parallels the mathematical
-notation used above, with the following differences:</p>
+<p>The function can be used with two different kinds of logical notation
+(“if <span class="math inline">\(a\)</span> then <span class="math inline">\(b\)</span>”, is simply equivalent to <span class="math inline">\(b \lor \lnot a\)</span>):</p>
+<p><strong>Arithmetic notation</strong>, recommended with the default
+argument <code>solidus = TRUE</code>:</p>
 <ul>
-<li>Not: <code>!</code> or <code>-</code></li>
-<li>And: <code>&amp;</code> or <code>&amp;&amp;</code> or
-<code>*</code></li>
+<li>Conditional solidus “<span class="math inline">\({}\:\vert\:\mathopen{}{}\)</span>”:
+<code>|</code></li>
+<li>Not: <code>-</code></li>
+<li>And: <code>*</code></li>
 <li>Or: <code>+</code></li>
-<li>If-then: <code>&gt;</code> (“if <span class="math inline">\(a\)</span> then <span class="math inline">\(b\)</span>”, <code>a &gt; b</code>, is simply
-equivalent to <span class="math inline">\(b \lor \lnot a\)</span>)<br />
+<li>If-then: <code>&gt;</code><br />
 </li>
 </ul>
-<p>If an additional argument <code>solidus = FALSE</code> is given in
-<code>inferP()</code>, then a notation is used that differs from the
-above in the conditional symbol and in the “or”-connective:</p>
+<p><strong>Logical notation</strong>, recommended with the default
+argument <code>solidus = FALSE</code>:</p>
 <ul>
 <li>Conditional solidus “<span class="math inline">\({}\:\vert\:\mathopen{}{}\)</span>”:
 <code>~</code></li>
-<li>Or: <code>+</code> or <code>|</code> or <code>||</code></li>
+<li>Not: <code>!</code></li>
+<li>And: <code>&amp;</code> or <code>&amp;&amp;</code></li>
+<li>Or: <code>|</code> or <code>||</code></li>
+<li>If-then: two-argument function<code>ifthen()</code><br />
+</li>
 </ul>
-<p>This alternative notation allows the user to use proper R syntax for
-the connectives (<code>!</code>, <code>&amp;</code>, <code>|</code>,
-<code>&amp;&amp;</code>, <code>||</code>), in case it were convenient to
-paste them from other R expressions.</p>
-<p>In the following examples the main notation is used.</p>
+<p>These two kinds of notation can actually be mixed (the only
+restriction is that <code>|</code> and <code>||</code> cannot be used
+with argument <code>solidus = TRUE</code>). But <strong>beware</strong>
+that mixing them may lead to unusual connection precedence; you should
+preferably ensure the desired precedence with parentheses in this case.
+Using <code>!</code> as “not” together with <code>+</code>
+<code>*</code> <code>&gt;</code> is particularly error-prone, so the
+function issues a warning in this case.</p>
+<p>In the following examples we use the arithmetic notation, but with
+<code>&amp;</code> for “and”.</p>
 <div id="simple-examples" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Simple examples</h2>
 <p>Load the package:</p>
@@ -541,7 +550,7 @@ must be 1:</li>
 must be 0:</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">inferP</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(a  <span class="sc">|</span>  <span class="sc">!</span>a <span class="sc">&amp;</span> I)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(a  <span class="sc">|</span>  <span class="sc">-</span>a <span class="sc">&amp;</span> I)</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>)</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># min max </span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#   0   0</span></span></code></pre></div>
@@ -551,7 +560,7 @@ must be 0:</li>
 <li>A probability conditional on contradictory premises, such as <span class="math inline">\(b \land \lnot b\)</span>, is undefined:</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">inferP</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(a  <span class="sc">|</span>  b <span class="sc">&amp;</span> <span class="sc">!</span>b <span class="sc">&amp;</span> I)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(a  <span class="sc">|</span>  b <span class="sc">&amp;</span> <span class="sc">-</span>b <span class="sc">&amp;</span> I)</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>)</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># min max </span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#  NA  NA</span></span></code></pre></div>
@@ -693,9 +702,9 @@ other door, No. 2.</p>
 <span class="math inline">\(I\)</span>, three propositions expressing
 the information we have: you chose door No. 1, <code>you1</code>, the
 host opened door No. 3, <code>host3</code>, and there is no car behind
-door No. 3, <code>!car3</code>.</p>
+door No. 3, <code>-car3</code>.</p>
 <p>The target probability is thus
-<code>P(car2  |  you1 &amp; host3 &amp; !car3 &amp; I)</code></p>
+<code>P(car2  |  you1 &amp; host3 &amp; -car3 &amp; I)</code></p>
 </div>
 <div id="given-probabilities" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Given
@@ -748,7 +757,7 @@ behind the door you chose:<br />
 <p>We can finally input the desired target and the constraints into
 <code>inferP()</code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">inferP</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(car2  <span class="sc">|</span>  you1 <span class="sc">&amp;</span> host3 <span class="sc">&amp;</span> <span class="sc">!</span>car3 <span class="sc">&amp;</span> I),</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(car2  <span class="sc">|</span>  you1 <span class="sc">&amp;</span> host3 <span class="sc">&amp;</span> <span class="sc">-</span>car3 <span class="sc">&amp;</span> I),</span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>    <span class="do">##</span></span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="fu">P</span>(car1 <span class="sc">&amp;</span> car2  <span class="sc">|</span>  I) <span class="sc">==</span> <span class="dv">0</span>,</span>
 <span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="fu">P</span>(car1 <span class="sc">&amp;</span> car3  <span class="sc">|</span>  I) <span class="sc">==</span> <span class="dv">0</span>,</span>
@@ -787,7 +796,7 @@ which states that we have no reason to believe the host would choose
 door No. 2 more than No. 3 or vice versa, when the car is behind door
 No. 1. The bounds of the target probability become</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">inferP</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(car2  <span class="sc">|</span>  you1 <span class="sc">&amp;</span> host3 <span class="sc">&amp;</span> <span class="sc">!</span>car3 <span class="sc">&amp;</span> I),</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>    <span class="at">target =</span> <span class="fu">P</span>(car2  <span class="sc">|</span>  you1 <span class="sc">&amp;</span> host3 <span class="sc">&amp;</span> <span class="sc">-</span>car3 <span class="sc">&amp;</span> I),</span>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    <span class="do">##</span></span>
 <span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>    <span class="fu">P</span>(car1 <span class="sc">&amp;</span> car2  <span class="sc">|</span>  I) <span class="sc">==</span> <span class="dv">0</span>,</span>
 <span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>    <span class="fu">P</span>(car1 <span class="sc">&amp;</span> car3  <span class="sc">|</span>  I) <span class="sc">==</span> <span class="dv">0</span>,</span>
@@ -837,10 +846,10 @@ chose:<br />
 <p>The target probability is for the car being behind door No. 2, given
 that you chose No. 1, the host fell and opened No. 3, but there was no
 car there:<br />
-<code>P(car2  |  you1 &amp; host3 &amp; !car3 &amp; fall &amp; I)</code>.</p>
+<code>P(car2  |  you1 &amp; host3 &amp; -car3 &amp; fall &amp; I)</code>.</p>
 <p>The result is</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">inferP</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>   <span class="at">target =</span> <span class="fu">P</span>(car2  <span class="sc">|</span>  you1 <span class="sc">&amp;</span> host3 <span class="sc">&amp;</span> <span class="sc">!</span>car3 <span class="sc">&amp;</span> fall <span class="sc">&amp;</span> I),</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>   <span class="at">target =</span> <span class="fu">P</span>(car2  <span class="sc">|</span>  you1 <span class="sc">&amp;</span> host3 <span class="sc">&amp;</span> <span class="sc">-</span>car3 <span class="sc">&amp;</span> fall <span class="sc">&amp;</span> I),</span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>    <span class="do">##</span></span>
 <span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>    <span class="fu">P</span>(car1 <span class="sc">&amp;</span> car2  <span class="sc">|</span>  I) <span class="sc">==</span> <span class="dv">0</span>,</span>
 <span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>    <span class="fu">P</span>(car1 <span class="sc">&amp;</span> car3  <span class="sc">|</span>  I) <span class="sc">==</span> <span class="dv">0</span>,</span>

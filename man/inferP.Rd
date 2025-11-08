@@ -35,21 +35,32 @@ coin_lands_heads
 `tomorrow it rains` # note the backticks
 }\if{html}{\out{</div>}}
 
-Available logical connectives are "not" (negation, "\eqn{\lnot}"), "and" (conjunction, "\eqn{\land}"), "or" (disjunction, "\eqn{\lor}"), "if-then" (implication, "\eqn{\Rightarrow}"). The first three follow the standard R syntax for logical operators (see \link[base:logical]{base::logical}):
+Available logical connectives are "not" (negation, "\eqn{\lnot}"), "and" (conjunction, "\eqn{\land}"), "or" (disjunction, "\eqn{\lor}"), "if-then" (implication, "\eqn{\Rightarrow}") which internally is simply defined as "x or not-y". Two kinds of notation are available:
+
+\strong{Arithmetic notation}: should be used with argument \code{solidus = TRUE}:
 \itemize{
-\item Not: \verb{ !} or \verb{ -}
-\item And: \code{&} or \code{&&} or \code{*}
-\item Or: \code{+}; if argument \code{solidus = FALSE}, also \code{||} or \code{|} are allowed.
+\item Not: \verb{ -}
+\item And: \code{*}
+\item Or: \code{+}
+\item If-then: \code{>}
 }
 
-The "if-then" connective is represented by the infix operator \code{>}; internally \code{x > y} is simply defined as \verb{x or not-y}.
+\strong{Logical notation} (see \link[base:logical]{base::logical}): should be used with the argument \code{solidus = FALSE}:
+\itemize{
+\item Not: \code{!}
+\item And: \code{&} or \code{&&}
+\item Or: \code{|} or \code{||}
+\item If-then: two-argument function \code{ifthen()}
+}
+
+The two kinds of notation can actually be mixed (only \code{|} and \code{||} are not allowed if \code{solidus = TRUE}), but \strong{beware} of very unusual connective precedence in that case; for example, \code{!a + b} is interpreted as \code{!(a + b)}. If you use mixed notation you should explicitly group with parentheses to ensure the desired connective precedence. A warning is issued when \code{!} is used for negation together with \code{+}, \code{*}, because the grouping is dangerously counter-intuitive in this case.
 
 Examples of logical expressions:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{a
 a & b
 (a + hypothesis1) & -A
-red.ball & ((a > !b) + c)
+red.ball & ((a > -b) + c)
 }\if{html}{\out{</div>}}
 }
 
@@ -61,16 +72,13 @@ The probability of an expression \eqn{X} conditional on an expression \eqn{Y}in 
 
 can be entered in the following ways, among others (extra spaces added just for clarity):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{P(!a + b  |  c & H)
-P(-a + b  |  c && H)
-P(!a + b  |  c * H)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{P(-a + b  |  c * H)
 }\if{html}{\out{</div>}}
 
-or, if argument  \code{solidus = FALSE}, in the following ways:
+or, if argument  \code{solidus = FALSE}:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{P(!a | b  ~  c & H)
-P(-a + b  ~  c && H)
-P(!a || b  ~  c * H)
+P(!a || b  ~  c && H)
 }\if{html}{\out{</div>}}
 
 It is also possible to use \code{Pr}, \code{p}, \code{pr}, \code{F}, \code{f}, \code{T} (for "truth"), or \code{t} instead of \code{P}.
@@ -104,7 +112,7 @@ inferP(
 ## Trivial example with inequality constraint
 inferP(
   target = P(a | h),
-  P(!a | h) >= 0.2
+  P(-a | h) >= 0.2
 )
 
 #' ## The probability of an "and" is always less
