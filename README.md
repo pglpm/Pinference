@@ -117,7 +117,7 @@ min max
 Other example: the probability of a proposition based on contradictory premises ($b \land \lnot b$) is undefined:
 ```
 inferP(
-  target = P(a  |  b & !b)
+  target = P(a  |  b & -b)
 )
 
 min max
