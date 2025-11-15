@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   inferP: inferP.html
-last_built: 2025-11-08T22:06Z
+last_built: 2025-11-15T06:18Z
 urls:
   reference: https://pglpm.github.io/Pinference/reference
   article: https://pglpm.github.io/Pinference/articles

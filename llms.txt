@@ -149,12 +149,16 @@ in the package’s vignette.
 
 ## Installation
 
-The package can be installed with
+Dependencies: This package requires the
+[**lpSolve**](https://cran.r-project.org/package=lpSolve) package.
+
+This package can be installed from
+[CRAN](https://CRAN.R-project.org/package=Pinference) with
+`install.packages('Pinference')`.
+
+In case of a newer version not yet on CRAN, it can be installed with
 
     remotes::install_github('pglpm/Pinference')
-
-It requires the
-[**lpSolve**](https://cran.r-project.org/package=lpSolve) package.
 
 # Package index
 
