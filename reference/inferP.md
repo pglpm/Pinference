@@ -162,6 +162,7 @@ Presses, 1996
 ## Examples
 
 ``` r
+
 ## No constraints
 inferP(
   target = P(a | h)

@@ -2,6 +2,8 @@
 
 ## Pinference 0.2.6
 
+CRAN release: 2025-11-30
+
 - New two-argument function ifthen() for material implication.
 - Updated documentation about choice of logical notation, emphasizing
   possible non-standard connective precedence.

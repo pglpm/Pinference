@@ -19,28 +19,32 @@ calculus*](https://encyclopediaofmath.org/wiki/Sequent_calculus)
 (Takeuti 1987). The probability calculus has many analogies with the
 sequent calculus
 
-In sequent calculus we express that proposition $a$ is true within a set
-of axioms $I$ by the notation
+In sequent calculus we express that proposition $`a`$ is true within a
+set of axioms $`I`$ by the notation
 
-$$I \vdash a$$
+``` math
+I \vdash a
+```
 
 The same is expressed in the probability calculus by the notation (note
 the reflection)
 
-$$P\left( a\ |\ {}I \right) = 1$$
+``` math
+\mathrm{P}(a \:\vert\:\mathopen{} I) = 1
+```
 
 but in this case we can also consider degrees of credibility different
-from $1$.
+from $`1`$.
 
 The theory of “random variables” is a particular application of the
-probability calculus: an expression such as “$X{\! = \!}x$” means “The
-quantity $X$ is measured to have value $x$” – which is just a
-proposition. Also the “causal calculus” is a particular application: an
-expression such as “${do}\left( X{\! = \!}x \right)$” means “The
-quantity $X$ has been *set* equal to $x$” – which is also just a
-proposition. In the probability calculus we can in fact even consider
-more general propositions, such as “The quantity $X$ has been *reported*
-to be equal to $x$”.
+probability calculus: an expression such as “$`X\mathrel{\!=\!}x`$”
+means “The quantity $`X`$ is measured to have value $`x`$” – which is
+just a proposition. Also the “causal calculus” is a particular
+application: an expression such as “$`\mathrm{do}(X \mathrel{\!=\!}x)`$”
+means “The quantity $`X`$ has been *set* equal to $`x`$” – which is also
+just a proposition. In the probability calculus we can in fact even
+consider more general propositions, such as “The quantity $`X`$ has been
+*reported* to be equal to $`x`$”.
 
   
 
@@ -53,15 +57,21 @@ Jaynes 2003, Jeffreys 1983, Johnson 1924, Johnson 1936.
 
 In propositional logic, suppose we assert that:
 
-- proposition $a$ is true given a set of axioms $I$,
-- proposition $b \vee \neg a$ is true given the set of axioms $I$
-  augmented with the proposition $c$.
+- proposition $`a`$ is true given a set of axioms $`I`$,
+- proposition $`b \lor \lnot a`$ is true given the set of axioms $`I`$
+  augmented with the proposition $`c`$.
 
-Then we can also assert that $b$ is true given the set of axioms
-$c \land I$. This is a logical inference. In the notation of sequent
+Then we can also assert that $`b`$ is true given the set of axioms
+$`c \land I`$. This is a logical inference. In the notation of sequent
 calculus (Takeuti 1987) it is written as follows:
 
-$$\frac{I \vdash a\quad\quad c \land I \vdash b \vee \neg a}{c \land I \vdash b}$$
+``` math
+\frac{
+I \vdash a \quad\quad c \land I \vdash b \lor \lnot a
+}{
+c \land I \vdash b
+}
+```
 
 The conclusion follows from the initial assertions by the application of
 a set of inference rules.
@@ -69,23 +79,36 @@ a set of inference rules.
 In the probability calculus the same inference can be expressed as
 follows:
 
-$$\frac{P\left( a\ |\ {}I \right) = 1\quad\quad P\left( b \vee \neg a\ |\ {}c \land I \right) = 1}{P\left( b\ |\ {}c \land I \right) = 1}$$
+``` math
+\frac{
+\mathrm{P}(a \:\vert\:\mathopen{} I) = 1\quad\quad \mathrm{P}(b \lor \lnot a \:\vert\:\mathopen{} c \land I) = 1
+}{
+\mathrm{P}(b \:\vert\:\mathopen{} c \land I) = 1
+}
+```
 
 This final probability can be shown to follow from the initial ones by
-the well-known probability rules, valid for any sentences $a$, $b$:
+the well-known probability rules, valid for any sentences $`a`$, $`b`$:
 
-- $P\left( \neg a\ |\ {}I \right) = 1 - P\left( a\ |\ {}I \right)$
+- $`\mathrm{P}(\lnot a \:\vert\:\mathopen{} I) = 1 - \mathrm{P}(a \:\vert\:\mathopen{} I)`$
 
-- $P\left( a \land b\ |\ {}I \right) = P\left( a\ |\ {}b \land I \right) \cdot P\left( b\ |\ {}I \right) = P\left( b\ |\ {}a \land I \right) \cdot P\left( a\ |\ {}I \right)$
+- $`\mathrm{P}(a \land b \:\vert\:\mathopen{} I) = \mathrm{P}(a \:\vert\:\mathopen{} b \land I)\cdot\mathrm{P}(b \:\vert\:\mathopen{} I)
+  = \mathrm{P}(b \:\vert\:\mathopen{} a \land I)\cdot\mathrm{P}(a \:\vert\:\mathopen{} I)`$
 
-- $P\left( a \vee b\ |\ {}I \right) = P\left( a\ |\ {}I \right) + P\left( b\ |\ {}I \right) - P\left( a \land b\ |\ {}I \right)$
+- $`\mathrm{P}(a \lor b \:\vert\:\mathopen{} I) = \mathrm{P}(a \:\vert\:\mathopen{} I) + \mathrm{P}(b \:\vert\:\mathopen{} I) - \mathrm{P}(a \land b \:\vert\:\mathopen{} I)`$
 
-- $P\left( a\ |\ {}a \land I \right) = 1$
+- $`\mathrm{P}(a \:\vert\:\mathopen{} a \land I) = 1`$
 
 Another example of a simple probability inference, which immediately
 follows by the probability rules, is
 
-$$\frac{P\left( a\ |\ {}I \right) = 0.3\quad\quad P\left( b\ |\ {}a \land I \right) = 0.2}{P\left( a \land b\ |\ {}I \right) = 0.06}$$
+``` math
+\frac{
+\mathrm{P}(a \:\vert\:\mathopen{} I) = 0.3\quad\quad \mathrm{P}(b \:\vert\:\mathopen{} a \land I) = 0.2
+}{
+\mathrm{P}(a \land b \:\vert\:\mathopen{} I) = 0.06
+}
+```
 
   
 
@@ -97,17 +120,22 @@ algorithmically determine the *lower* and *upper* values that a
 probability can have, under the assertion of the values of other
 probabilities**. It is well-known, for instance, that if
 
-$$P\left( a\ |\ {}I \right) = 0.2\,,\quad P\left( b\ |\ {}I \right) = 0.7$$
+``` math
+\mathrm{P}(a \:\vert\:\mathopen{} I) = 0.2\,,\quad
+\mathrm{P}(b \:\vert\:\mathopen{} I) = 0.7
+```
 
-then the probability $P\left( a \land b\ |\ {}I \right)$ cannot be
-larger than the minimum of the two above, that is,
+then the probability $`\mathrm{P}(a \land b \:\vert\:\mathopen{} I)`$
+cannot be larger than the minimum of the two above, that is,
 
-$$P\left( a \land b\ |\ {}I \right) \in \lbrack 0,0.2\rbrack$$
+``` math
+\mathrm{P}(a \land b \:\vert\:\mathopen{} I) \in [0, 0.2]
+```
 
 In fact this is also possible with inequality constraints. As a very
 trivial example, if the probability
-$P\left( a\ |\ {}I \right) \leq 0.3$, then we must have
-$P\left( \neg a\ |\ {}I \right) \geq 0.3$.
+$`\mathrm{P}(a \:\vert\:\mathopen{} I) \le 0.3`$, then we must have
+$`\mathrm{P}(\lnot a \:\vert\:\mathopen{} I) \ge 0.3`$.
 
 Finding such bounds is equivalent to solving a linear-optimization
 problem. The most relevant texts about this equivalence are those by
@@ -126,12 +154,12 @@ equality or inequality constraints about the conditional probabilities
 of other logical expressions.
 
 The function can be used with two different kinds of logical notation
-(“if $a$ then $b$”, is simply equivalent to $b \vee \neg a$):
+(“if $`a`$ then $`b`$”, is simply equivalent to $`b \lor \lnot a`$):
 
 **Arithmetic notation**, recommended with the default argument
 `solidus = TRUE`:
 
-- Conditional solidus “${}\ |\ {}{}$”: `|`
+- Conditional solidus “$`{}\:\vert\:\mathopen{}{}`$”: `|`
 - Not: `-`
 - And: `*`
 - Or: `+`
@@ -140,7 +168,7 @@ The function can be used with two different kinds of logical notation
 **Logical notation**, recommended with the default argument
 `solidus = FALSE`:
 
-- Conditional solidus “${}\ |\ {}{}$”: `~`
+- Conditional solidus “$`{}\:\vert\:\mathopen{}{}`$”: `~`
 - Not: `!`
 - And: `&` or `&&`
 - Or: `|` or `||`
@@ -161,15 +189,17 @@ for “and”.
 Load the package:
 
 ``` r
+
 library('Pinference')
 ```
 
 Here are some examples, from more trivial to more complex.
 
-- The probability for a sentence $a$ can a priori be anything between 0
-  and 1:
+- The probability for a sentence $`a`$ can a priori be anything between
+  0 and 1:
 
 ``` r
+
 inferP(
     target = P(a  |  I)
 )
@@ -183,6 +213,7 @@ inferP(
   be 1:
 
 ``` r
+
 inferP(
     target = P(a  |  a & I)
 )
@@ -196,6 +227,7 @@ inferP(
   be 0:
 
 ``` r
+
 inferP(
     target = P(a  |  -a & I)
 )
@@ -206,9 +238,10 @@ inferP(
   
 
 - A probability conditional on contradictory premises, such as
-  $b \land \neg b$, is undefined:
+  $`b \land \lnot b`$, is undefined:
 
 ``` r
+
 inferP(
     target = P(a  |  b & -b & I)
 )
@@ -224,6 +257,7 @@ inferP(
   rule:
 
 ``` r
+
 inferP(
     target = P(a & b  |  I),
     P(a  |  I) == 0.2,
@@ -236,6 +270,7 @@ inferP(
 - The rule for “conditional probability”:
 
 ``` r
+
 inferP(
     target = P(b  |  a & I),
     P(a & b  |  I) == 0.06,
@@ -248,6 +283,7 @@ inferP(
 - Same rule, but with an inequality constraint:
 
 ``` r
+
 inferP(
     target = P(b  |  a & I),
     P(a & b  |  I) == 0.06,
@@ -262,6 +298,7 @@ inferP(
   0.5 probability:
 
 ``` r
+
 inferP(
     target = P(a  |  I),
     P(a  |  I) == P(b  |  I),
@@ -272,10 +309,11 @@ inferP(
 # 0.5 0.5
 ```
 
-- The logical rule of implication (*modus ponens*): if $a$ and
-  $\left. a\Rightarrow b \right.$ are true, then $b$ is true:
+- The logical rule of implication (*modus ponens*): if $`a`$ and
+  $`a \Rightarrow b`$ are true, then $`b`$ is true:
 
 ``` r
+
 inferP(
     target = P(b  |  I),
     P(a  |  I) == 1,
@@ -288,6 +326,7 @@ inferP(
 - Under a false proposition, any implication is always true:
 
 ``` r
+
 inferP(
     target = P(a > b  |  I),
     P(a  |  I) == 0
@@ -300,6 +339,7 @@ inferP(
   of sequent calculus:
 
 ``` r
+
 inferP(
     target = P(X + Y | I & J),
     P(A & X | I) == 1,
@@ -313,13 +353,14 @@ inferP(
 
 ### Combining evidence
 
-Suppose that hypothesis $H$ has probability 0.7 given evidence $E_{1}$,
-and probability 0.8 given evidence $E_{2}$. What is its probability if
-two pieces of evidence are combined, that is, given their conjunction?
-An interesting result, proven in Hailperin 2006, is that such
-probability can be anything:
+Suppose that hypothesis $`H`$ has probability 0.7 given evidence
+$`E_1`$, and probability 0.8 given evidence $`E_2`$. What is its
+probability if two pieces of evidence are combined, that is, given their
+conjunction? An interesting result, proven in Hailperin 2006, is that
+such probability can be anything:
 
 ``` r
+
 inferP(
     target = P(H  |  E1 & E2 & I),
     P(H  |  E1 & I) == 0.7,
@@ -361,7 +402,7 @@ We want to know what’s the probability that the car is behind the other
 door, No. 2.
 
 The conditional of the target probability has, besides the game rules
-$I$, three propositions expressing the information we have: you chose
+$`I`$, three propositions expressing the information we have: you chose
 door No. 1, `you1`, the host opened door No. 3, `host3`, and there is no
 car behind door No. 3, `-car3`.
 
@@ -416,6 +457,7 @@ We can finally input the desired target and the constraints into
 [`inferP()`](https://pglpm.github.io/Pinference/reference/inferP.md):
 
 ``` r
+
 inferP(
     target = P(car2  |  you1 & host3 & -car3 & I),
     ##
@@ -458,6 +500,7 @@ door No. 2 more than No. 3 or vice versa, when the car is behind door
 No. 1. The bounds of the target probability become
 
 ``` r
+
 inferP(
     target = P(car2  |  you1 & host3 & -car3 & I),
     ##
@@ -520,6 +563,7 @@ car there:
 The result is
 
 ``` r
+
 inferP(
    target = P(car2  |  you1 & host3 & -car3 & fall & I),
     ##

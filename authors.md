@@ -10,14 +10,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/pglpm/Pinference/blob/main/DESCRIPTION)
 
-Porta Mana P (2025). *Pinference: Probability Inference for
+Porta Mana P (2026). *Pinference: Probability Inference for
 Propositional Logic*. R package version 0.2.6,
 <https://pglpm.github.io/Pinference/>.
 
     @Manual{,
       title = {Pinference: Probability Inference for Propositional Logic},
       author = {PierGianLuca {Porta Mana}},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.2.6},
       url = {https://pglpm.github.io/Pinference/},
     }
