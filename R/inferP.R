@@ -23,8 +23,8 @@
 #'
 #' Available logical connectives are "not" (negation, "\eqn{\lnot}"), "and" (conjunction, "\eqn{\land}"), "or" (disjunction, "\eqn{\lor}"), "if-then" (implication, "\eqn{\Rightarrow}") which internally is simply defined as "x or not-y". Two kinds of notation are available:
 #'
-#' **Arithmetic notation**: should be used with argument `solidus = TRUE`:
-#' - Not: ` -`
+#' **Arithmetic notation**: should be used with argument `solidus = TRUE` (default):
+#' - Not: ` - `
 #' - And: ` * `
 #' - Or: ` + `
 #' - If-then: ` > `
