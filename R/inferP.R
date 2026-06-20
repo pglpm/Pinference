@@ -105,7 +105,7 @@
 #'   P(-a | h) >= 0.2
 #' )
 #'
-#' #' ## The probability of an "and" is always less
+#' ## The probability of an "and" is always less
 #' ## than the probabilities of the and-ed propositions:
 #' inferP(
 #'   target = P(a & b | h),

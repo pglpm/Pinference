@@ -37,9 +37,9 @@ coin_lands_heads
 
 Available logical connectives are "not" (negation, "\eqn{\lnot}"), "and" (conjunction, "\eqn{\land}"), "or" (disjunction, "\eqn{\lor}"), "if-then" (implication, "\eqn{\Rightarrow}") which internally is simply defined as "x or not-y". Two kinds of notation are available:
 
-\strong{Arithmetic notation}: should be used with argument \code{solidus = TRUE}:
+\strong{Arithmetic notation}: should be used with argument \code{solidus = TRUE} (default):
 \itemize{
-\item Not: \verb{ -}
+\item Not: \code{-}
 \item And: \code{*}
 \item Or: \code{+}
 \item If-then: \code{>}
@@ -115,7 +115,7 @@ inferP(
   P(-a | h) >= 0.2
 )
 
-#' ## The probability of an "and" is always less
+## The probability of an "and" is always less
 ## than the probabilities of the and-ed propositions:
 inferP(
   target = P(a & b | h),
