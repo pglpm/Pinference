@@ -81,7 +81,7 @@
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>coin_lands_heads</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="st">`</span><span class="at">tomorrow it rains</span><span class="st">`</span> <span class="co"># note the backticks</span></span></code></pre><p></p></div>
 <p>Available logical connectives are "not" (negation, "\(\lnot\)"), "and" (conjunction, "\(\land\)"), "or" (disjunction, "\(\lor\)"), "if-then" (implication, "\(\Rightarrow\)") which internally is simply defined as "x or not-y". Two kinds of notation are available:</p>
-<p><strong>Arithmetic notation</strong>: should be used with argument <code>solidus = TRUE</code>:</p><ul><li><p>Not: <code> -</code></p></li>
+<p><strong>Arithmetic notation</strong>: should be used with argument <code>solidus = TRUE</code> (default):</p><ul><li><p>Not: <code>-</code></p></li>
 <li><p>And: <code>*</code></p></li>
 <li><p>Or: <code>+</code></p></li>
 <li><p>If-then: <code>&gt;</code></p></li>
@@ -152,7 +152,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> min max </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.0 0.8 </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#' ## The probability of an "and" is always less</span></span></span>
+<span class="r-in"><span><span class="co">## The probability of an "and" is always less</span></span></span>
 <span class="r-in"><span><span class="co">## than the probabilities of the and-ed propositions:</span></span></span>
 <span class="r-in"><span><span class="fu">inferP</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  target <span class="op">=</span> <span class="fu">P</span><span class="op">(</span><span class="va">a</span> <span class="op">&amp;</span> <span class="va">b</span> <span class="op">|</span> <span class="va">h</span><span class="op">)</span>,</span></span>

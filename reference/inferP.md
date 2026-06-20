@@ -67,9 +67,10 @@ Available logical connectives are "not" (negation, "\\\lnot\\"), "and"
 (implication, "\\\Rightarrow\\") which internally is simply defined as
 "x or not-y". Two kinds of notation are available:
 
-**Arithmetic notation**: should be used with argument `solidus = TRUE`:
+**Arithmetic notation**: should be used with argument `solidus = TRUE`
+(default):
 
-- Not: ` -`
+- Not: `-`
 
 - And: `*`
 
@@ -178,7 +179,7 @@ inferP(
 #> min max 
 #> 0.0 0.8 
 
-#' ## The probability of an "and" is always less
+## The probability of an "and" is always less
 ## than the probabilities of the and-ed propositions:
 inferP(
   target = P(a & b | h),
