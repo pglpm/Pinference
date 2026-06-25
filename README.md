@@ -1,8 +1,8 @@
-
 <!-- badges: start -->
   [![CRAN status](https://www.r-pkg.org/badges/version/Pinference)](https://CRAN.R-project.org/package=Pinference)
 <!-- badges: end -->
-  # Pinference: probability inference for propositional logic
+
+# Pinference: probability inference for propositional logic
 
 ## An explanation of what this package is about
 
