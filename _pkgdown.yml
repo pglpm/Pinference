@@ -1,5 +1,6 @@
 url: https://pglpm.github.io/Pinference/
 template:
   bootstrap: 5
-  bootswatch: simplex
-
+  bslib:
+    bootswatch: simplex
+    pkgdown-nav-height: 100px
