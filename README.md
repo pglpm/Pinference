@@ -6,7 +6,7 @@
 
 ## An explanation of what this package is about
 
-*[This explanation is taken from the [vignette](https://pglpm.github.io/Pinference/articles/inferP.html) accompanying the package.]*
+*(This explanation is taken from the [vignette](https://pglpm.github.io/Pinference/articles/inferP.html) accompanying the package.)*
 
 The probability calculus is an extension of the calculus of propositional logic. Besides the *truth* or *falsity* of propositions, the probability calculus also considers a continuum of degrees of credibility -- probabilities -- between those two extremes. Just as propositional logic gives a set of rules to derive the truth or falsity of some propositions from the truth or falsity of others, so the probability calculus gives a set of rules to derive the probability for some propositions from the probability for others; these rules include the logical ones as a special case. (See [vignette](https://pglpm.github.io/Pinference/articles/inferP.html) for references.)
 
