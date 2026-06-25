@@ -1,12 +1,10 @@
-[![CRAN
-status](https://www.r-pkg.org/badges/version/Pinference)](https://CRAN.R-project.org/package=Pinference)
-\# Pinference: probability inference for propositional logic
+# Pinference: probability inference for propositional logic
 
 ## An explanation of what this package is about
 
-*\[This explanation is taken from the
+*(This explanation is taken from the
 [vignette](https://pglpm.github.io/Pinference/articles/inferP.html)
-accompanying the package.\]*
+accompanying the package.)*
 
 The probability calculus is an extension of the calculus of
 propositional logic. Besides the *truth* or *falsity* of propositions,
