@@ -1,5 +1,7 @@
 # Pinference: probability inference for propositional logic
 
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.21396718.svg)](https://doi.org/10.5281/zenodo.21396718)
+
 ## An explanation of what this package is about
 
 *(This explanation is taken from the
