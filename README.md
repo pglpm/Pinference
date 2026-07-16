@@ -1,5 +1,7 @@
 <!-- badges: start -->
-  [![CRAN status](https://www.r-pkg.org/badges/version/Pinference)](https://CRAN.R-project.org/package=Pinference)
+[![CRAN status](https://www.r-pkg.org/badges/version/Pinference)](https://CRAN.R-project.org/package=Pinference)
+
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.21396718.svg)](https://doi.org/10.5281/zenodo.21396718)
 <!-- badges: end -->
 
 # Pinference: probability inference for propositional logic
