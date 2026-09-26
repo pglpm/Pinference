@@ -1,6 +1,6 @@
 # Pinference: probability inference for propositional logic
 
-## An explanation of what this package is about
+## What is this package about?
 
 *(This explanation is taken from the
 [vignette](https://pglpm.github.io/Pinference/articles/inferP.html)
