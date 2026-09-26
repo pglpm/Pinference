@@ -19,4 +19,4 @@ URL: https://pglpm.github.io/Pinference/, https://github.com/pglpm/Pinference/
 Suggests:
     knitr,
     rmarkdown
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
