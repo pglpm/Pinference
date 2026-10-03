@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/Pinference)](https://CRAN.R-project.org/package=Pinference)
-[![CRAN downloads](https://cranlogs.r-pkg.org/badges/Pinference)](https://cran.r-project.org/package=Pinference)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/last-week/Pinference)](https://cran.r-project.org/package=Pinference)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.21396718.svg)](https://doi.org/10.5281/zenodo.21396718)
 [![r-universe version](https://pglpm.r-universe.dev/Pinference/badges/version)](https://pglpm.r-universe.dev/Pinference)
 <!-- badges: end -->
